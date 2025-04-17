@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
+import { getProductDetail } from "../services/db_manager";
 
 const ViewProduct = () => {
   const [products, setProducts] = useState([]); // State to store all products
@@ -126,7 +127,7 @@ const ViewProduct = () => {
                         <td>{product.oem}</td>
                         <td>{product.nha}</td>
                         <td>{product.cmmReferenceNumber}</td>
-                        <td>{product.date}</td>
+                        <td>{product.registrationDate}</td>
                         <td>{product.registeredBy}</td>
                       </tr>
                     ))}

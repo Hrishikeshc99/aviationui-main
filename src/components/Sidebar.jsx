@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
-import AddProduct from './AddProduct';
-import EditProduct from './EditProduct';
-import ViewProduct from './ViewProduct';
-import SupplierRegistration from './SupplierRegistration';
-import ViewSupplierRegistration from './ViewSupplierRegis';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import styles from "./sidebar.module.css";
+import AviationLogo from "../static/img/AviationLogo.png";
+import { Users, Package, Warehouse, FileText } from "lucide-react";
 
 const Sidebar = () => {
-  const [collapseState, setCollapseState] = useState({
-    supplierReg: false,
-    purchaseOrder: false,
-    materialManagement: false,
-  });
+  const [collapseState, setCollapseState] = useState({});
 
   const toggleCollapse = (section) => {
     setCollapseState((prevState) => ({
@@ -20,71 +13,146 @@ const Sidebar = () => {
     }));
   };
 
+  const handleMouseEnter = (section) => {
+    setCollapseState((prevState) => ({
+      ...prevState,
+      [section]: true,
+    }));
+  };
+
+  const handleMouseLeave = (section) => {
+    setCollapseState((prevState) => ({
+      ...prevState,
+      [section]: false,
+    }));
+  };
+
   return (
-    <div className="flex-shrink-0 p-3" style={{ width: '220px', position: 'fixed', zIndex: 1050, height: '100vh', backgroundColor: '#6c8dfa', color: 'white' }}>
-      <a href="/" className="d-flex align-items-center pb-3 my-4 link-dark text-decoration-none border-bottom">
-        <svg className="bi me-2" width="30" height="24">
-          <use xlinkHref="#bootstrap" />
-        </svg>
-        <img src="src/static/img/prfileLogo.png" alt="Profile" className="rounded-circle mx-5" style={{ height: '30px', width: '30px' }} />
-      </a>
+    <div className={styles.sidebar}>
+      <div className={styles.sidebarHeader}>
+        <img
+          src={AviationLogo}
+          alt="Logo"
+          style={{ height: "30px", width: "30px" }}
+        />
+        <h3 className={styles.companyName}>Aviation</h3>
+      </div>
 
-      <ul className="list-unstyled ps-0 my-5">
-        {/* Supplier Registration */}
-        <li className="mb-4">
-          <a
-            className="mx-2 mb-2 btn-toggle align-items-center rounded text-white mb-3 font-weight-bold text-decoration-none"
-            onClick={() => toggleCollapse('supplierReg')}
-            aria-expanded={collapseState.supplierReg ? 'true' : 'false'}
-          >
-            Supplier Registration
-          </a>
-          <div className={`collapse ${collapseState.supplierReg ? 'show' : ''} bg-white rounded border mt-2`} id="supplierReg-collapse">
-            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small p-3">
-              <li className="mb-2">
-                <span><i className="fa-solid fa-address-card"></i><Link to="/SupplierRegistration" className="rounded mb-4 text-dark text-decoration-none">Registration</Link></span>
-              </li>
-              <li className="mb-2">
-                <span><i className="fa-solid fa-eye"></i><Link to="/ViewSupplierRegistration" className="rounded mb-4 text-dark text-decoration-none">View Supplier</Link></span>
-              </li>
-            </ul>
-          </div>
-        </li>
+      <div className={styles.sidebarMenu}>
+        <ul className={styles.menuList}>
+          {[
+            {
+              key: "supplierReg",
+              icon: Users,
+              label: "Supplier Registration",
+              links: [
+                { href: "/SupplierRegistration", label: "Registration" },
+                { href: "/ViewSupplierRegistration", label: "View Supplier" },
+                { href: "/approvesupplier ", label: "Approve Supplier " },
+                { href: "/approvesupplier ", label: "Edit Supplier " },
+              ],
+            },
+            {
+              key: "purchaseOrder",
+              icon: Package,
+              label: "Product Order",
+              links: [
+                { href: "/AddProduct", label: "Add Product" },
+                { href: "/ProductList", label: "View Product" },
+              ],
+            },
+            {
+              key: "materialManagement",
+              icon: Warehouse,
+              label: "Store Acceptance",
+              links: [
+                { href: "/storeAcceptance", label: "Registration" },
+                { href: "/viewstoreAcceptance", label: "View Store" },
+              ],
+            },
+            {
+              key: "MaterialNote",
+              icon: FileText,
+              label: "Material Note",
+              links: [
+                { href: "/materialPage", label: "Add MaterialNote" },
+                { href: "/viewmaterialPage", label: "View MaterialNote" },
+              ],
+            },
+            {
+              key: "MaterialRequisition",
+              icon: FileText,
+              label: "Material Requisition",
+              links: [
+                {
+                  href: "/addmaterialrequisition",
+                  label: "Add Material Requisition",
+                },
+                { href: "/Viewmaterialrequisition", label: "View Requisition" },
+              ],
+            },
+            {
+              key: "PurchaseRequisition",
+              icon: FileText,
+              label: "Purchase Requisition",
+              links: [
+                {
+                  href: "/addPurchaseRequisition",
+                  label: "Add Purchase Requisition",
+                },
+                {
+                  href: "/ViewPurchaseRequisition ",
+                  label: "View Purchase Requisition",
+                },
+              ],
+            },
+            // { key: "Checker", icon: FileText, label: "Checker", links: [
+            //   // { href: "/addPurchaseRequisition", label: "Add Purchase Requisition" },
+            //   { href: "/checker ", label: "Checker" }
+            // ] },
+          ].map(({ key, icon: Icon, label, links }) => (
+            <li
+              key={key}
+              className={styles.menuItem}
+              onMouseEnter={() => handleMouseEnter(key)}
+              onMouseLeave={() => handleMouseLeave(key)}
+            >
+              <a
+                className={styles.menuToggle}
+                onClick={() => toggleCollapse(key)}
+                aria-expanded={collapseState[key] ? "true" : "false"}
+              >
+                <Icon className={styles.icon} size={20} />
+                {label}
+                <span
+                  className={`${styles.toggleIcon} ${
+                    collapseState[key] ? styles.open : ""
+                  }`}
+                >
+                  ▶
+                </span>
+              </a>
+              <div
+                className={`${styles.submenu} ${
+                  collapseState[key] ? styles.show : ""
+                }`}
+              >
+                <ul className={styles.submenuList}>
+                  {links.map((link) => (
+                    <li key={link.href} className={styles.submenuItem}>
+                      <a href={link.href} className={styles.submenuLink}>
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-        {/* Product Order */}
-        <li className="mb-4">
-          <a
-            className="mx-2 mb-2 btn-toggle align-items-center rounded text-white mb-3 font-weight-bold text-decoration-none"
-            onClick={() => toggleCollapse('purchaseOrder')}
-            aria-expanded={collapseState.purchaseOrder ? 'true' : 'false'}
-          >
-            Product Order
-          </a>
-          <div className={`collapse ${collapseState.purchaseOrder ? 'show' : ''} bg-white rounded border mt-2`} id="purchaseOrder-collapse">
-            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small p-3">
-              <li className="mb-2"><a href="AddProduct" className="rounded mb-4 text-dark text-decoration-none">Add Product</a></li>
-              <li className="mb-2"><a href="ProductList" className="rounded mb-4 text-dark text-decoration-none">View Product</a></li>
-            </ul>
-          </div>
-        </li>
-
-        {/* Store Acceptance */}
-        <li className="mb-4">
-          <a
-            className="mx-2 mb-2 btn-toggle align-items-center rounded text-white mb-3 font-weight-bold text-decoration-none"
-            onClick={() => toggleCollapse('materialManagement')}
-            aria-expanded={collapseState.materialManagement ? 'true' : 'false'}
-          >
-            Store Acceptance
-          </a>
-          <div className={`collapse ${collapseState.materialManagement ? 'show' : ''} bg-white rounded border mt-2`} id="materialManagement-collapse">
-            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small p-3">
-              <li className="mb-2"><span><i className="fa-solid fa-address-card"></i><Link to="/storeAcceptance" className="rounded mb-4 text-dark text-decoration-none">Registration</Link></span></li>
-              <li className="mb-2"><span><i className="fa-solid fa-eye"></i><Link to="/viewstoreAcceptance" className="rounded mb-4 text-dark text-decoration-none">View Store</Link></span></li>
-            </ul>
-          </div>
-        </li>
-      </ul>
+      <div className={styles.sidebarFooter}>Dashboard v1.0</div>
     </div>
   );
 };
