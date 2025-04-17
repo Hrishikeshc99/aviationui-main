@@ -12,6 +12,7 @@ import ProductList from "./components/ProductList";
 import ViewSupplierRegis from "./components/ViewSupplierRegis";
 import ViewStoreAcc from "./components/ViewStoreAcc";
 const App = () => {
+  console.log("print");
   return (
     <Router>
       <Routes>
@@ -25,8 +26,14 @@ const App = () => {
         <Route path="/editProduct/:productId" element={<EditProduct />} />
         <Route path="/storeAcceptance" element={<StoreAccComponent />} />
         <Route path="/viewstoreAcceptance" element={<ViewStoreAcc />} />
-        <Route path="/SupplierRegistration" element={<SupplierRegistartion />} />
-        <Route path="/ViewSupplierRegistration" element={<ViewSupplierRegis />} />
+        <Route
+          path="/SupplierRegistration"
+          element={<SupplierRegistartion />}
+        />
+        <Route
+          path="/ViewSupplierRegistration"
+          element={<ViewSupplierRegis />}
+        />
       </Routes>
     </Router>
   );
